@@ -1,0 +1,7 @@
+uploads/
+.env
+*.log
+*.tmp
+*.bak
+*.swp
+*.mp4
