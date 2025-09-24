@@ -1,22 +1,20 @@
-/* ===== RESET ===== */
-* {
+*{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;  
 }
 
 body {
   background-color: #121212;
   color: #f5f5f5;
   line-height: 1.6;
-  padding: 20px;
 }
 
-/* ===== HEADER ===== */
-header {
+header{
   text-align: center;
-  margin-bottom: 20px;
+  margin-left: 240px;
+  padding: 20px;
 }
 
 header h1 {
@@ -29,7 +27,7 @@ nav {
 }
 
 nav a, nav span {
-  color: #f5f5f5;
+  color: #f5f5f5f5;
   text-decoration: none;
   margin: 0 8px;
   font-weight: bold;
@@ -39,7 +37,69 @@ nav a:hover {
   color: #ff4655;
 }
 
-/* ===== VIDEOS GRID ===== */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 220px;
+  background: #2a2a2a;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  border-right: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar .logo {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #ff4655;
+  margin-bottom: 5px;
+}
+
+.sidebar h3 {
+  color: #fff;
+  font-size: 1rem;
+  margin: 15px 0 10px;
+  border-bottom: 1px solid #555;
+  padding-bottom: 5px;
+}
+
+.sidebar a {
+  display: block;
+  color: #f5f5f5;
+  text-decoration: none;
+  padding: 8px 0;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.sidebar a:hover {
+  color: #ff4655;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  color:#fff;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+main {
+  margin-left: 240px;
+  padding: 20px;
+}
+
+h2 {
+  margin-bottom: 15px;
+  color: #fff;
+}
+
 .videos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -48,34 +108,32 @@ nav a:hover {
 }
 
 .video-card {
+  display: block;
   background: #1e1e1e;
   padding: 15px;
   border-radius: 10px;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, background 0.2s ease;
+  color: #fff;
+  text-decoration: none;
 }
 
-.video-card:hover {
+.video-card:hover{
   transform: scale(1.02);
+  background: #252525;
 }
 
-.video-card h3 {
-  margin: 10px 0 5px;
+.video-card h3, .video-card p{
   color: #fff;
 }
 
-.video-card p {
-  font-size: 0.9rem;
-  color: #aaa;
-}
-
-video {
+.video-card video {
   width: 100%;
   border-radius: 8px;
+  background: #000;
 }
 
-/* ===== BOTÕES ===== */
 button {
-  background: #ff4655;
+  background: #464545;
   color: #fff;
   border: none;
   padding: 8px 14px;
@@ -83,23 +141,18 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.2s ease;
+  transition: background 0.2 ease;
 }
 
-button:hover {
-  background: #e63946;
+button:hover{
+  background: #491217;
 }
 
-a {
+a{
   color: #ff4655;
   text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
-/* ===== FORMULÁRIOS ===== */
 form {
   margin-top: 15px;
 }
@@ -108,7 +161,7 @@ input, textarea {
   width: 100%;
   padding: 10px;
   margin: 6px 0;
-  border: none;
+  border:  none;
   border-radius: 5px;
   background: #2a2a2a;
   color: #fff;
@@ -119,7 +172,6 @@ textarea {
   min-height: 60px;
 }
 
-/* ===== COMENTÁRIOS ===== */
 .comentario {
   background: #2a2a2a;
   padding: 10px;
@@ -127,21 +179,54 @@ textarea {
   margin-bottom: 10px;
 }
 
-.comentario strong {
+.comentario strong { 
   color: #ff4655;
 }
 
-/* ===== RESPONSIVIDADE ===== */
+.video-detalhe {
+  flex-direction: column;
+  margin: 20px;
+  max-width: 1100px;
+
+}
+.video-detalhe video {
+  width: 100%;
+  max-width: 1100px;
+  border-radius: 10px;
+  margin-bottom: -15px;
+}
+
 @media (max-width: 768px) {
-  body {
-    padding: 10px;
+  .sidebar {
+    transform: translateX(-100%);
+    width: 200px;
   }
 
-  header h1 {
-    font-size: 1.5rem;
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  header, main {
+    margin-left: 0;
+    padding: 15px;
   }
 
   .videos {
-    grid-template-columns: 1fr;
+    display: block;
+  }
+
+  .video-card {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .video-card video {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
   }
 }

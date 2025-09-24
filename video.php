@@ -59,30 +59,60 @@ if (isset($_POST["comentario"]) && !empty(trim($_POST["comentario"]))) {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo htmlspecialchars($video["titulo"]); ?></title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+<body class="video-page">
+    <!-- Botão Hamburguer -->
+    <span class="menu-toggle" onclick="toggleMenu()">☰</span>
 
-<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <span class="logo-text">🎮 MVP</span>
+        </div>
+
+    <div class="menu-section">
+        <h3>Você:</h3>
+        <a href="historico.php">⏱ Histórico</a>
+        <a href="perfil.php">📂 Seus vídeos</a>
+        <a href="curtidos.php">❤️ Vídeos Curtidos</a>
+    </div>
+
+    <div class="menu-section">
+        <h3>Seguindo:</h3>
+    </div>
+</div>
+<main>
+    <div class="video-detalhe">
     <h1><a href="index.php">🎮 MVP</a></h1>
-    <p titulo> <?php echo htmlspecialchars($video["titulo"]); ?> </p>
-    <video width="640" controls>
+    <video width="1100" controls>
         <source src="uploads/<?php echo htmlspecialchars($video["arquivo"]); ?>" type="video/mp4">
     </video>
-    <p titulo> <?php echo htmlspecialchars($video["titulo"]); ?> </p>
-    <p>🎮 Jogo: <?php echo htmlspecialchars($video["jogo"]); ?></p>
-    <p>👤 Autor: <?php echo htmlspecialchars($video["nome"]); ?></p>
-    <p>📅 Publicado em: <?php echo date("d/m/Y H:i", strtotime($video["data_upload"])); ?></p>
-    
-    <form method="POST">
+        <form method="POST">
         <button type="submit" name="curtir">
             <?php echo $curtido ? "💔 Descurtir" : "❤️ Curtir"; ?>
         </button>
         <span><?php echo $totalCurtidas; ?> curtidas</span>
     </form>
+    <br>
+    <p titulo> <?php echo htmlspecialchars($video["titulo"]); ?> </p>
+    <p>🎮 Jogo: <?php echo htmlspecialchars($video["jogo"]); ?></p>
+    <p>👤 Autor: <?php echo htmlspecialchars($video["nome"]); ?></p>
+    <p>📅 Publicado em: <?php echo date("d/m/Y H:i", strtotime($video["data_upload"])); ?></p>
 <hr>
     <h2>💬 Comentários</h2>
-    <?php
+
+    <?php if (isset($_SESSION["user_id"])): ?>
+        <form method="POST">
+            <textarea name="comentario" placeholder="Escreva um comentário..." required></textarea><br>
+            <button type="submit">Enviar</button>
+        </form>
+    <?php else: ?>
+        <p>⚠️ <a href="login.php">Faça login</a> para comentar.</p>
+    <?php endif; ?>
+    <br>
+    <hr>
+        <?php
     $comentarios = $conn->query("SELECT c.comentario, c.data_comentario, u.nome FROM comentarios c JOIN usuarios u ON c.user_id  = u.id WHERE c.video_id = $video_id ORDER BY c.data_comentario DESC");
     if ($comentarios->num_rows > 0){
         while ($row = $comentarios->fetch_assoc()) {
@@ -95,14 +125,10 @@ if (isset($_POST["comentario"]) && !empty(trim($_POST["comentario"]))) {
         echo "<p>Sem comentário ainda. Seja o primeiro!</p>";
     }
     ?>
-
-    <?php if (isset($_SESSION["user_id"])): ?>
-        <form method="POST">
-            <textarea name="comentario" placeholder="Escreva um comentário..." required></textarea><br>
-            <button type="submit">Enviar</button>
-        </form>
-    <?php else: ?>
-        <p>⚠️ <a href="login.php">Faça login</a> para comentar.</p>
-    <?php endif; ?>
+    <script>
+function toggleMenu() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
 </body>
 </html>
