@@ -1,38 +1,45 @@
 <?php
+session_start();
 include("includes/db.php");
 
-$msg ="";
+$msg = "";
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $nome = $_POST["nome"];
-    $email = $_POST["email"];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nome = trim($_POST["nome"]);
+    $email = trim($_POST["email"]);
     $senha = $_POST["senha"];
     $confirma = $_POST["confirma"];
 
-    if ($senha !== $confirma){
+    if ($senha !== $confirma) {
         $msg = "As senhas não coincidem!";
     } else {
-        $hash = password_hash($senha, PASSWORD_DEFAULT);
+        // Verifica se já existe email
+        $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
 
-    $check = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
-    $check->bind_param("s", $email);
-    $check->execute();
-    $check->store_result();
-
-    if($check->num_rows > 0){
-        $msg = "E-mail já cadastrado!";
-    } else {
-        $stmt = $conn->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $nome, $email, $senha);
-
-        if ($stmt->execute()){
-            $msg = "Usuário cadastrado com sucesso! <a href='login.php'>Fazer login</a>";
+        if ($stmt->num_rows > 0) {
+            $msg = "Este e-mail já está cadastrado!";
         } else {
-            $msg = "Erro: " . $stmt->error;
+            $hash = password_hash($senha, PASSWORD_DEFAULT);
+            $tipo = "user"; // padrão
+
+            $stmt = $conn->prepare("INSERT INTO usuarios (nome, email, senha, tipo) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("ssss", $nome, $email, $hash, $tipo);
+
+            if ($stmt->execute()) {
+                $_SESSION["user_id"] = $stmt->insert_id;
+                $_SESSION["nome"] = $nome;
+                $_SESSION["tipo"] = $tipo;
+
+                header("Location: index.php");
+                exit;
+            } else {
+                $msg = "Erro ao cadastrar. Tente novamente.";
+            }
         }
         $stmt->close();
-    }
-    $check->close();
     }
 }
 ?>
@@ -56,37 +63,43 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             return true;
         }
 
-        function toggleSenha(idCampo, idBotao){
-            const campo = document.getElementById(idCampo);
-            const botao = document.getElementById(idBotao);
+        // função genérica: recebe id do campo e do botão
+        function toggleSenha(fieldId, btnId){
+            const campo = document.getElementById(fieldId);
+            const botao = document.getElementById(btnId);
 
             if (campo.type === "password"){
                 campo.type = "text";
-                botao.textContent = "👁️ Ocultar";
+                botao.textContent = "👁️";
             } else {
                 campo.type = "password";
-                botao.textContent = "👁️ Mostrar";
+                botao.textContent = "👁️";
             }
         }
-        </script>
+    </script>
 </head>
 <body>
-    <h1>Cadastro</h1>
-    <form method="POST" onsubmit="return validarFormulario(event)">
-        <input type="text" name="nome" placeholder="Nome" required><br><br>
-        <input type="email" id="email" name="email" placeholder="E-mail" required><br><br>
+    <div class="auth-container">
+        <h1>Cadastro</h1>
+        <form method="POST" onsubmit="return validarFormulario(event)">
+            <input type="text" name="nome" placeholder="Nome" required>
+            <input type="email" id="email" name="email" placeholder="E-mail" required>
 
-        <input type="password" id="senha" name="senha" placeholder="Senha" required>
-        <button type="button" id="btnSenha" onclick="toggleSenha('senha', 'btnSenha')">👁️ Mostrar</button>
-        <br><br>
+            <!-- Campo senha -->
+            <div class="password-field">
+                <input type="password" id="senha" name="senha" placeholder="Senha" required aria-label="Senha">
+                <button type="button" class="pw-toggle" id="btnSenha" aria-label="Mostrar senha" onclick="toggleSenha('senha','btnSenha')">👁️</button>
+            </div>
 
-        <input type="password" id="confirma" name="confirma" placeholder="Confirme a senha" required>
-        <button type="button" id="btnConfirma" onclick="toggleSenha('confirma', 'btnConfirma')">👁️ Mostrar</button>
-        <br><br>
-
+            <!-- Campo confirma senha -->
+            <div class="password-field">
+                <input type="password" id="confirma" name="confirma" placeholder="Confirme a senha" required aria-label="Confirme a senha">
+                <button type="button" class="pw-toggle" id="btnConfirma" aria-label="Mostrar senha" onclick="toggleSenha('confirma','btnConfirma')">👁️</button>
+            </div>
         <button type="submit">Cadastrar</button>
     </form>
     <p styple="color:red;"><?php echo $msg; ?></p>
     <p>Já tem uma conta? <a href="login.php">Faça Login</a></p>
+    </div>
 </body>
 </html>

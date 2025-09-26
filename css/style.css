@@ -51,13 +51,6 @@ nav a:hover {
   z-index: 1000;
 }
 
-.sidebar .logo {
-  font-size: 2.2rem;
-  font-weight: bold;
-  color: #ff4655;
-  margin-bottom: 5px;
-}
-
 .sidebar h3 {
   color: #fff;
   font-size: 1rem;
@@ -78,6 +71,19 @@ nav a:hover {
 .sidebar a:hover {
   color: #ff4655;
 }
+
+.logo-text {
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.logo-text:hover {
+  color: #ff4655;
+}
+
 
 .menu-toggle {
   display: none;
@@ -229,4 +235,116 @@ textarea {
     max-height: 500px;
     object-fit: cover;
   }
+}
+
+.auth-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 30px;
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.auth-container h1 {
+  margin-bottom: 20px;
+  font-size: 1.6rem;
+  color:#ff4655;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: none;
+  background: #2a2a2a;
+  color: #fff;
+}
+
+.auth-container input:focus {
+  outline: 2px solid #ff4655;
+}
+
+.auth-container button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  font-size: 1rem;
+  background: #ff4655;
+  border-radius: 6px;
+}
+
+.auth-container button:hover {
+  background: #e63946;
+}
+
+.auth-container p {
+  margin-top: 15px;
+  color: #ccc;
+}
+
+.auth-container a {
+  color: #ff4655;
+  text-decoration: none;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+
+.password-field {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+/* input padrão (ajuste o padding-right para espaço do botão) */
+.password-field input[type="password"],
+.password-field input[type="text"] {
+  width: 100%;
+  padding: 12px 44px 12px 12px; /* espaço à direita para o botão */
+  border-radius: 6px;
+  border: none;
+  background: #2a2a2a;
+  color: #fff;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+/* botão que fica sobre o input */
+.password-field .pw-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  margin: 0;
+  background: transparent;   /* tira qualquer cor de fundo */
+  border: none;              /* tira borda padrão */
+  color: #ff4655;
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+  -webkit-appearance: none;  /* remove aparência padrão em alguns navegadores */
+  appearance: none;
+  outline: none;
+  border-radius: 50%;
+}
+
+/* foco acessível no botão (opcional) */
+.password-field .pw-toggle:focus {
+  box-shadow: 0 0 0 3px rgba(255,70,85,0.12);
+}
+
+/* evita que o botão apareça com background em navegadores antigos */
+.password-field .pw-toggle::-moz-focus-inner {
+  border: 0;
+  padding: 0;
 }

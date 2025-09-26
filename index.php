@@ -10,25 +10,27 @@ include("includes/db.php");
     <title>MVP - Plataforma de Highlights</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="video-page">
+    <!-- Botão Hamburguer -->
     <span class="menu-toggle" onclick="toggleMenu()">☰</span>
 
     <div class="sidebar" id="sidebar">
         <div class="logo">
-            <span class="logo-text">🎮 MVP</span>
-    </div>
+            <a href="index.php" class="logo-text">🎮 MVP</a>
+        </div>
 
-    <div class="menu-section">
-        <h3>Você:</h3>
-        <a href="historico.php">⏱ Histórico</a>
-        <a href="perfil.php">📂 Seus vídeos</a>
-        <a href="curtidos.php">❤️ Vídeos Curtidos</a>
-    </div>
+        <div class="menu-section">
+            <h3>Você:</h3>
+            <a href="historico.php">⏱ Histórico</a>
+            <a href="perfil.php">📂 Seus vídeos</a>
+            <a href="curtidos.php">❤️ Vídeos Curtidos</a>
+        </div>
 
-    <div class="menu-section">
-        <h3>Seguindo:</h3>
+        <div class="menu-section">
+            <h3>Seguindo:</h3>
+            <p style="color: #aaa;">Em breve...</p>
+        </div>
     </div>
-</div>
 
 <header>
     <h1>🎮 MVP - Plataforma de Highlights</h1>

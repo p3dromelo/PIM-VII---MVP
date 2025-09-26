@@ -8,19 +8,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $senha = $_POST["senha"];
 
-    $stmt = $conn->prepare("SELECT id, nome, senha, tipo FROM usuarios WHERE email = ?");
+    $stmt = $conn->prepare("SELECT id, nome, senha FROM usuarios WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
 
     if($stmt->num_rows > 0) {
-        $stmt->bind_result($id, $nome, $hash, $tipo);
+        $stmt->bind_result($id, $nome, $hash);
         $stmt->fetch();
     
         if(password_verify($senha, $hash)) {
             $_SESSION["user_id"] = $id;
             $_SESSION["nome"] = $nome;
-            $_SESSION["tipo"] = $tipo;
 
             header("Location: index.php");
             exit;
@@ -47,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (email === "" || senha === ""){
                 e.preventDefault();
-                alert("Prrencha todos os campos!");
+                alert("Prencha todos os campos!");
                 return false;
             }
             return true;
@@ -59,26 +58,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (campo.type === "password"){
                 campo.type = "text";
-                botao.textContent = "👁️ Ocultar";
+                botao.textContent = "👁️";
             } else {
                 campo.type = "password";
-                botao.textContent = "👁️ Mostrar";
+                botao.textContent = "👁️";
             }
         }
     </script>
 </head>
 <body>
+<div class="auth-container">
     <h1>Login</h1>
-    <form method="POST">
-        <input type="email" id="email" name="email" placeholder="E-mail" required><br><br>
-        
-        <input type="password" id="senha" name="senha" placeholder="Senha" required>
-        <button type="button" id="btnSenha" onclick="toggleSenha()">👁️ Mostrar</button>
-        <br><br>
-        
+    <form method="POST" onsubmit="return validarLogin(event)">
+        <input type="email" id="email" name="email" placeholder="E-mail" required>
+            <div class="password-field">
+                <input type="password" id="senha" name="senha" placeholder="Senha" required aria-label="Senha">
+                <button type="button" class="pw-toggle" id="btnSenha" aria-label="Mostrar senha" onclick="toggleSenha()">👁️</button>
+            </div>
         <button type="submit">Entrar</button>
     </form>
     <p style="color:red;"><?php echo $msg; ?></p>
     <p>Não tem conta? <a href="register.php">Cadastre-se</a></p>
+    </div>
 </body>
 </html>

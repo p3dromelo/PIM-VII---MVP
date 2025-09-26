@@ -8,6 +8,11 @@ if(!isset($_GET["id"])) {
 }
 $video_id = (int) $_GET ["id"];
 
+if (isset($_SESSION["user_id"])) {
+    $uid = $_SESSION["user_id"];
+    $conn->query("INSERT INTO historico (user_id, video_id, data_visualizacao) VALUES ($uid, $video_id, NOW())");
+}
+
 $sql = "SELECT v.id, v.titulo, v.jogo, v.arquivo, v.data_upload, u.nome FROM videos v JOIN usuarios u ON v.user_id = u.id WHERE v.id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $video_id);
@@ -65,26 +70,27 @@ if (isset($_POST["comentario"]) && !empty(trim($_POST["comentario"]))) {
     <!-- Botão Hamburguer -->
     <span class="menu-toggle" onclick="toggleMenu()">☰</span>
 
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="logo">
-            <span class="logo-text">🎮 MVP</span>
+            <a href="index.php" class="logo-text">🎮 MVP</a>
         </div>
 
-    <div class="menu-section">
-        <h3>Você:</h3>
-        <a href="historico.php">⏱ Histórico</a>
-        <a href="perfil.php">📂 Seus vídeos</a>
-        <a href="curtidos.php">❤️ Vídeos Curtidos</a>
-    </div>
+        <div class="menu-section">
+            <h3>Você:</h3>
+            <a href="historico.php">⏱ Histórico</a>
+            <a href="perfil.php">📂 Seus vídeos</a>
+            <a href="curtidos.php">❤️ Vídeos Curtidos</a>
+        </div>
 
-    <div class="menu-section">
-        <h3>Seguindo:</h3>
+        <div class="menu-section">
+            <h3>Seguindo:</h3>
+            <p style="color: #aaa;">Em breve...</p>
+        </div>
     </div>
-</div>
-<main>
+</body>
+    <!-- Conteúdo principal -->
+    <main>
     <div class="video-detalhe">
-    <h1><a href="index.php">🎮 MVP</a></h1>
     <video width="1100" controls>
         <source src="uploads/<?php echo htmlspecialchars($video["arquivo"]); ?>" type="video/mp4">
     </video>
@@ -126,9 +132,10 @@ if (isset($_POST["comentario"]) && !empty(trim($_POST["comentario"]))) {
     }
     ?>
     <script>
-function toggleMenu() {
-    document.getElementById("sidebar").classList.toggle("active");
-}
-</script>
-</body>
+    function toggleMenu() {
+        document.getElementById("sidebar").classList.toggle("active");
+    }
+    </script>
+    </main>
+
 </html>
