@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($senha !== $confirma) {
         $msg = "As senhas não coincidem!";
     } else {
-        // Verifica se já existe email
+
         $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -23,15 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $msg = "Este e-mail já está cadastrado!";
         } else {
             $hash = password_hash($senha, PASSWORD_DEFAULT);
-            $tipo = "user"; // padrão
 
-            $stmt = $conn->prepare("INSERT INTO usuarios (nome, email, senha, tipo) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("ssss", $nome, $email, $hash, $tipo);
+            $stmt = $conn->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $nome, $email, $hash);
 
             if ($stmt->execute()) {
                 $_SESSION["user_id"] = $stmt->insert_id;
                 $_SESSION["nome"] = $nome;
-                $_SESSION["tipo"] = $tipo;
 
                 header("Location: index.php");
                 exit;
@@ -63,7 +61,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return true;
         }
 
-        // função genérica: recebe id do campo e do botão
         function toggleSenha(fieldId, btnId){
             const campo = document.getElementById(fieldId);
             const botao = document.getElementById(btnId);
@@ -85,13 +82,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" name="nome" placeholder="Nome" required>
             <input type="email" id="email" name="email" placeholder="E-mail" required>
 
-            <!-- Campo senha -->
             <div class="password-field">
                 <input type="password" id="senha" name="senha" placeholder="Senha" required aria-label="Senha">
                 <button type="button" class="pw-toggle" id="btnSenha" aria-label="Mostrar senha" onclick="toggleSenha('senha','btnSenha')">👁️</button>
             </div>
 
-            <!-- Campo confirma senha -->
             <div class="password-field">
                 <input type="password" id="confirma" name="confirma" placeholder="Confirme a senha" required aria-label="Confirme a senha">
                 <button type="button" class="pw-toggle" id="btnConfirma" aria-label="Mostrar senha" onclick="toggleSenha('confirma','btnConfirma')">👁️</button>

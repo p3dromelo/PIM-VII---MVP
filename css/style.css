@@ -37,18 +37,18 @@ nav a:hover {
   color: #ff4655;
 }
 
+:root { --sidebar-w: 260px; }
+
 .sidebar {
   position: fixed;
   left: 0;
   top: 0;
   height: 100%;
-  width: 220px;
+  width: var(--sidebar-w);
   background: #2a2a2a;
-  padding: 20px 10px;
-  display: flex;
-  flex-direction: column;
-  border-right: transform 0.3s ease;
+  padding: 20px;
   z-index: 1000;
+  transition: transform 0.3s ease;
 }
 
 .sidebar h3 {
@@ -72,33 +72,39 @@ nav a:hover {
   color: #ff4655;
 }
 
-.logo-text {
+.sidebar .logo {
+  text-align: center;
+}
+
+.sidebar .logo-text {
   color: #fff;
-  font-size: 1.3rem;
+  font-size: 2rem;
   font-weight: bold;
   text-decoration: none;
   display: inline-block;
 }
 
-.logo-text:hover {
+.sidebar .logo-text:hover {
   color: #ff4655;
 }
 
-
 .menu-toggle {
   display: none;
-  font-size: 2rem;
+  font-size: 1.6rem;
   position: fixed;
   top: 15px;
   left: 15px;
-  color:#fff;
-  cursor: pointer;
+  color: #fff;
+  background: rgba(0,0,0,0.4);
+  padding: 6px 10px;
+  border-radius: 6px;
   z-index: 1100;
 }
 
 main {
-  margin-left: 240px;
+  margin-left: calc(var(--sidebar-w) + 20px);
   padding: 20px;
+  transition: margin-left 0.3s ease;
 }
 
 h2 {
@@ -189,12 +195,49 @@ textarea {
   color: #ff4655;
 }
 
-.video-detalhe {
-  flex-direction: column;
-  margin: 20px;
-  max-width: 1100px;
-
+.video-main {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
 }
+
+.video-detalhe {
+  flex: 2;
+}
+
+.sugestoes {
+  flex: 1;
+  max-width: 320px;
+}
+
+.sugestao-card {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+  background: #1a1a1a;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.sugestao-card video {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.sugestao-card h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+}
+
+.sugestao-card p {
+  margin: 0;
+  font-size: 12px;
+  color: #aaa;
+}
+
 .video-detalhe video {
   width: 100%;
   max-width: 1100px;
@@ -203,6 +246,47 @@ textarea {
 }
 
 @media (max-width: 768px) {
+  main {
+    margin-left:0;
+  }
+
+  .video-main {
+    flex-direction: column;
+  }
+
+  .sugestoes{
+    max-width: 100%;
+  }
+
+  .sugestao-card {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 12px;
+  }
+
+  .sugestao-card video {
+    width: 100%;
+    height: auto;
+    max-height: 220px;
+    border-radius: 8px;
+  }
+
+  
+  .sugestao-info {
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  .sugestao-info h4 {
+    font-size: 1.1rem;
+  }
+
+  .sugestao-info p {
+    font-size: 0.95rem;
+    color: #bbb;
+  }
+
   .sidebar {
     transform: translateX(-100%);
     width: 200px;
@@ -348,3 +432,4 @@ textarea {
   border: 0;
   padding: 0;
 }
+
