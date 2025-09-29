@@ -11,7 +11,6 @@ include("includes/db.php");
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="video-page">
-    <!-- Botão Hamburguer -->
     <span class="menu-toggle" onclick="toggleMenu()">☰</span>
 
     <div class="sidebar" id="sidebar">
@@ -46,6 +45,19 @@ include("includes/db.php");
     </nav>
     <hr>
 </header>
+
+<form action="search.php" method="GET" class="search-bar" autocomplete="off">
+    <input type="text" id="searchInput" name="q" placeholder="Pesquisar por título ou jogo..." required>
+    
+    <button type="submit" aria-label="Pesquisar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+    </button>
+    
+    <div id="suggestions" class="suggestions-box"></div>
+</form>
+
 
 <main>
     <h2>📺 Últimos vídeos:</h2>
@@ -101,6 +113,32 @@ window.addEventListener("scroll", () => {
             }
         }
     }
+});
+
+const searchInput = document.getElementById("searchInput");
+const suggestionsBox = document.getElementById("suggestions");
+
+searchInput.addEventListener("input", () => {
+    const query = searchInput.value.trim();
+    if (query.length < 2) {
+        suggestionsBox.innerHTML = "";
+        return;
+    }
+
+    fetch(`autocomplete.php?q=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(data => {
+            suggestionsBox.innerHTML = "";
+            data.forEach(item => {
+                const suggestion = document.createElement("div");
+                suggestion.classList.add("suggestion-item");
+                suggestion.textContent = `${item.titulo} (${item.jogo})`;
+                suggestion.onclick = () => {
+                    window.location.href = `video.php?id=${item.id}`;
+                };
+                suggestionsBox.appendChild(suggestion);
+            });
+        });
 });
 </script>
 </body>

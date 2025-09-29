@@ -37,6 +37,105 @@ nav a:hover {
   color: #ff4655;
 }
 
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 15px auto;
+  padding: 0;
+  border: 0;
+  max-width: 600px;
+  width: 90%;
+}
+
+.search-bar input,
+.search-bar button {
+  margin: 0;
+  border: 0;
+  outline: none;
+  height: 42px;
+  box-sizing: border-box;
+  font-family: inherit;
+  vertical-align: middle;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px 0 0 8px;
+  background: #222;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.search-bar button {
+  width: 50px;
+  padding: 0;
+  border-radius: 0 8px 8px 0;
+  background: #ff4d4d;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar button:hover {
+  background: #e63939;
+}
+
+.search-bar button svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.suggestions-box {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 6px;
+  margin-top: 4px;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 2000;
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.suggestion-item:hover {
+  background: #333;
+}
+
+@media (max-width: 600px) {
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .search-bar input,
+  .search-bar button {
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .search-bar input {
+      text-align: center;
+  }
+
+  .search-bar button {
+    margin-top: 8px;
+  }
+}
+
 :root { --sidebar-w: 260px; }
 
 .sidebar {
@@ -384,11 +483,10 @@ textarea {
   display: block;
 }
 
-/* input padrão (ajuste o padding-right para espaço do botão) */
 .password-field input[type="password"],
 .password-field input[type="text"] {
   width: 100%;
-  padding: 12px 44px 12px 12px; /* espaço à direita para o botão */
+  padding: 12px 44px 12px 12px;
   border-radius: 6px;
   border: none;
   background: #2a2a2a;
@@ -397,7 +495,6 @@ textarea {
   font-size: 1rem;
 }
 
-/* botão que fica sobre o input */
 .password-field .pw-toggle {
   position: absolute;
   top: 50%;
@@ -410,24 +507,22 @@ textarea {
   height: 34px;
   padding: 0;
   margin: 0;
-  background: transparent;   /* tira qualquer cor de fundo */
-  border: none;              /* tira borda padrão */
+  background: transparent;
+  border: none;
   color: #ff4655;
   font-size: 18px;
   cursor: pointer;
   line-height: 1;
-  -webkit-appearance: none;  /* remove aparência padrão em alguns navegadores */
+  -webkit-appearance: none;
   appearance: none;
   outline: none;
   border-radius: 50%;
 }
 
-/* foco acessível no botão (opcional) */
 .password-field .pw-toggle:focus {
   box-shadow: 0 0 0 3px rgba(255,70,85,0.12);
 }
 
-/* evita que o botão apareça com background em navegadores antigos */
 .password-field .pw-toggle::-moz-focus-inner {
   border: 0;
   padding: 0;
