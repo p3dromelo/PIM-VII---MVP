@@ -20,9 +20,15 @@ include("includes/db.php");
 
         <div class="menu-section">
             <h3>Você:</h3>
-            <a href="historico.php">⏱ Histórico</a>
-            <a href="perfil.php">📂 Seus vídeos</a>
-            <a href="curtidos.php">❤️ Vídeos Curtidos</a>
+            <a href="historico.php">
+                <img src="icons/History.png" class="icon"> Histórico
+            </a>
+            <a href="perfil.php">
+                <img src="icons/Files.png" class="icon"> Seus Vídeos
+            </a>
+            <a href="curtidos.php">
+                <img src="icons/Favorite.png" class="icon"> Vídeos Curtidos
+            </a>
         </div>
 
         <div class="menu-section">
@@ -31,20 +37,7 @@ include("includes/db.php");
         </div>
     </div>
 
-<header>
-    <h1>🎮 MVP - Plataforma de Highlights</h1>
-    <nav>
-        <?php if (isset($_SESSION["user_id"])): ?>
-            <span>Bem-vindo, <?php echo htmlspecialchars($_SESSION["nome"]); ?>!</span> |
-            <a href="upload.php">➕ Postar</a> |
-            <a href="logout.php">Sair</a>
-        <?php else: ?>
-            <a href="login.php">Login</a>
-            <a href="register.php">Cadastrar</a>
-        <?php endif; ?>
-    </nav>
-    <hr>
-</header>
+<header class="main-header">
 
 <form action="search.php" method="GET" class="search-bar" autocomplete="off">
     <input type="text" id="searchInput" name="q" placeholder="Pesquisar por título ou jogo..." required>
@@ -57,6 +50,23 @@ include("includes/db.php");
     
     <div id="suggestions" class="suggestions-box"></div>
 </form>
+
+<nav class="user-nav">
+    <?php if (isset ($_SESSION["user_id"])): ?>
+        <a href="upload.php" class="btn-postar"><img src="icons/Upload.png" class="nav-icon"> Postar</a>
+        <a href="perfil.php" class="user-link">
+            <img src="icons/Profile.png" class="nav-icon">
+            <?php echo htmlspecialchars($_SESSION["nome"]); ?>
+        </a>
+        <a href="logout.php" class="logout-btn" title="Sair">
+            <img src="icons/Logout.png" class="nav-icon">Sair
+        </a>
+    <?php else: ?>
+        <a href="login.php">Login</a>
+        <a href="register.php">Cadastrar</a>
+    <?php endif; ?>
+</nav>
+</header>
 
 
 <main>

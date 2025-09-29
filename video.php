@@ -91,9 +91,15 @@ if (isset($_POST["comentario"]) && !empty(trim($_POST["comentario"]))) {
 
         <div class="menu-section">
             <h3>Você:</h3>
-            <a href="historico.php">⏱ Histórico</a>
-            <a href="perfil.php">📂 Seus vídeos</a>
-            <a href="curtidos.php">❤️ Vídeos Curtidos</a>
+            <a href="historico.php">
+                <img src="icons/History.png" class="icon"> Histórico
+            </a>
+            <a href="perfil.php">
+                <img src="icons/Files.png" class="icon"> Seus Vídeos
+            </a>
+            <a href="curtidos.php">
+                <img src="icons/Favorite.png" class="icon"> Vídeos Curtidos
+            </a>
         </div>
 
         <div class="menu-section">
@@ -123,10 +129,9 @@ if (isset($_POST["comentario"]) && !empty(trim($_POST["comentario"]))) {
             <?php if (!empty($erro_msg ?? '')): ?>
                 <p style="color: red;"><?php echo htmlspecialchars($erro_msg); ?></p>
             <?php endif; ?>
-            <p>🎮 Jogo: <?php echo htmlspecialchars($video['jogo']); ?></p>
-            <p>👤 Autor: <?php echo htmlspecialchars($video['nome']); ?></p>
-            <p>📅 Publicado em: <?php echo date("d/m/Y H:i", strtotime($video['data_upload'])); ?></p>
-
+            <p><img src="icons/Game.png" class="icon"> Jogo: <?php echo htmlspecialchars($video["jogo"]); ?></p>
+            <p><img src="icons/Profile.png" class="icon"> Autor: <?php echo htmlspecialchars($video["nome"]); ?></p>
+            <p><img src="icons/Calendar.png" class="icon"> Publicado em: <?php echo date("d/m/Y H:i", strtotime($video["data_upload"])); ?></p>
             <hr>
             <h3>💬 Comentários</h3>
             <?php if (isset($_SESSION["user_id"])): ?>
@@ -170,7 +175,7 @@ if (isset($_POST["comentario"]) && !empty(trim($_POST["comentario"]))) {
                         echo "</video>";
                         echo "<div class='sugestao-info'>";
                         echo "<h4>" . htmlspecialchars($s['titulo']) . "</h4>";
-                        echo "<p>🎮 " . htmlspecialchars($s['jogo']) . "</p>";
+                        echo "<p><img src='icons/Game.png' class='icon'>" . htmlspecialchars($s['jogo']) . "</p>";
                         echo "</div>";
                     echo "</a>";
                 }

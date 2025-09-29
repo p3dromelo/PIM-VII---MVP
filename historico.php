@@ -25,10 +25,9 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="video-page">
-    <!-- Botão Hamburguer -->
+
     <span class="menu-toggle" onclick="toggleMenu()">☰</span>
 
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="logo">
             <a href="index.php" class="logo-text">🎮 MVP</a>
@@ -36,9 +35,15 @@ $result = $conn->query($sql);
 
         <div class="menu-section">
             <h3>Você:</h3>
-            <a href="historico.php">⏱ Histórico</a>
-            <a href="perfil.php">📂 Seus vídeos</a>
-            <a href="curtidos.php">❤️ Vídeos Curtidos</a>
+            <a href="historico.php">
+                <img src="icons/History.png" class="icon"> Histórico
+            </a>
+            <a href="perfil.php">
+                <img src="icons/Files.png" class="icon"> Seus Vídeos
+            </a>
+            <a href="curtidos.php">
+                <img src="icons/Favorite.png" class="icon"> Vídeos Curtidos
+            </a>
         </div>
 
         <div class="menu-section">
@@ -47,7 +52,6 @@ $result = $conn->query($sql);
         </div>
     </div>
 
-    <!-- Conteúdo principal -->
     <main>
         <h1>Histórico</h1>
         <div class="videos">

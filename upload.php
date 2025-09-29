@@ -68,23 +68,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="upload-container">
     <h1>📤 Enviar Highlight</h1>
 
     <form method="POST" enctype="multipart/form-data">
-        <label>Título:</label><br>
-        <input type="text" name="titulo" required><br><br>
+        <label>Título:</label>
+        <input type="text" name="titulo" required>
 
-        <label>Jogo:</label><br>
-        <input type="text" name="jogo" required><br><br>
+        <label>Jogo:</label>
+        <input type="text" name="jogo" required>
 
-        <label>Arquivo (MP4, máx 200MB e 30s):</label><br>
-        <input type="file" name="video" id="video" accept="video/mp4" required><br><br>
+        <label>Arquivo (MP4, máx 200MB e 30s):</label>
+        <input type="file" name="video" id="video" accept="video/mp4" required>
 
         <button type="submit">Enviar</button>
     </form>
 
     <p style="color:red;"><?php echo $msg; ?></p>
     <p><a href="index.php">⬅ Voltar para Home</a></p>
+    </div>
 
     <script>
     document.getElementById("video").addEventListener("change", function(){

@@ -1,20 +1,20 @@
 <?php
 session_start();
 include("includes/db.php");
+$q = trim($_GET["q"] ?? "");
+$resultados = [];
 
-$q = isset($_GET['q']) ? trim($_GET['q']) : "";
-
-$sql = "SELECT v.id, v.titulo, v.arquivo, v.jogo, v.data_upload, u.nome
-        FROM videos v
-        JOIN usuarios u ON v.user_id = u.id
-        WHERE v.titulo LIKE ? OR v.jogo LIKE ?
-        ORDER BY v.data_upload DESC";
-
-$stmt = $conn->prepare($sql);
-$searchTerm = "%$q%";
-$stmt->bind_param("ss", $searchTerm, $searchTerm);
-$stmt->execute();
-$result = $stmt->get_result();
+if ($q !== "") {
+    $sql = "SELECT id, titulo, jogo, arquivo FROM videos 
+            WHERE titulo LIKE ? OR jogo LIKE ? 
+            ORDER BY data_upload DESC";
+    $stmt = $conn->prepare($sql);
+    $like = "%$q%";
+    $stmt->bind_param("ss", $like, $like);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $resultados = $res->fetch_all(MYSQLI_ASSOC);
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -33,34 +33,39 @@ $result = $stmt->get_result();
         </div>
         <div class="menu-section">
             <h3>Você:</h3>
-            <a href="historico.php">⏱ Histórico</a>
-            <a href="perfil.php">📂 Seus vídeos</a>
-            <a href="curtidos.php">❤️ Vídeos Curtidos</a>
+            <a href="historico.php">
+                <img src="icons/History.png" class="icon"> Histórico
+            </a>
+            <a href="perfil.php">
+                <img src="icons/Files.png" class="icon"> Seus Vídeos
+            </a>
+            <a href="curtidos.php">
+                <img src="icons/Favorite.png" class="icon"> Vídeos Curtidos
+            </a>
         </div>
     </div>
 
     <main>
-        <h1>🔍 Resultados para: <?php echo htmlspecialchars($q); ?></h1>
-        <div class="videos">
-            <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<a class='video-card' href='video.php?id=" . $row['id'] . "'>";
-                    echo "<video muted>
-                            <source src='uploads/" . htmlspecialchars($row['arquivo']) . "' type='video/mp4'>
-                          </video>";
-                    echo "<h3>" . htmlspecialchars($row['titulo']) . "</h3>";
-                    echo "<p>🎮 " . htmlspecialchars($row['jogo']) . "</p>";
-                    echo "<p>👤 " . htmlspecialchars($row['nome']) . "</p>";
-                    echo "<p>📅 " . date('d/m/Y H:i', strtotime($row['data_upload'])) . "</p>";
-                    echo "</a>";
-                }
-            } else {
-                echo "<p>Nenhum vídeo encontrado.</p>";
+    <h1>🔎 Resultados para "<?php echo htmlspecialchars($q); ?>"</h1>
+
+    <div class="videos <?php echo (count($resultados) === 1) ? 'single-result' : ''; ?>">
+        <?php
+        if (count($resultados) > 0) {
+            foreach ($resultados as $row) {
+                echo "<a class='video-card' href='video.php?id=" . $row['id'] . "'>";
+                echo "<video muted>
+                        <source src='uploads/" . htmlspecialchars($row['arquivo']) . "' type='video/mp4'>
+                      </video>";
+                echo "<h3>" . htmlspecialchars($row['titulo']) . "</h3>";
+                echo "<p>🎮 " . htmlspecialchars($row['jogo']) . "</p>";
+                echo "</a>";
             }
-            ?>
-        </div>
-    </main>
+        } else {
+            echo "<p>Nenhum vídeo encontrado.</p>";
+        }
+        ?>
+    </div>
+</main>
 
     <script>
     function toggleMenu() {
